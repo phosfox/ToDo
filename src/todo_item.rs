@@ -27,7 +27,7 @@ mod tests {
         let name = String::from("test");
         let done = false;
 
-        let item = TodoItem::new(name, done);
+        let item = TodoItem::new(name.clone(), done);
         let got_name = item.name;
         let got_done = item.done;
 
