@@ -1,5 +1,4 @@
-mod {
-    pub struct TodoItem {
+pub struct TodoItem {
     pub name: String,
     pub done: bool, 
 }
@@ -17,4 +16,22 @@ impl TodoItem {
         self.done = true;
     }
 }
+
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_creation() {
+        let name = String::from("test");
+        let done = false;
+
+        let item = TodoItem::new(name, done);
+        let got_name = item.name;
+        let got_done = item.done;
+
+        assert_eq!(name, got_name);
+        assert_eq!(done, got_done);
+    }
 }
