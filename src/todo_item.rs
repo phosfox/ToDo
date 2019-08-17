@@ -5,7 +5,7 @@ pub struct TodoItem {
 
 impl TodoItem {
     pub fn new(name: String, done: bool) -> TodoItem {
-        TodoItem { name: name, done: done }
+        TodoItem { name, done }
     }
  
     pub fn change_name(&mut self, name: String) {
@@ -33,5 +33,13 @@ mod tests {
 
         assert_eq!(name, got_name);
         assert_eq!(done, got_done);
+    }
+
+    fn test_complete() {
+        let name = String::from("test");
+        let done = false;
+        let mut item = TodoItem::new(name.clone(), done);
+        item.complete();
+        assert_eq!(item.done, true);
     }
 }
