@@ -35,11 +35,21 @@ mod tests {
         assert_eq!(done, got_done);
     }
 
+    #[test]
     fn test_complete() {
         let name = String::from("test");
         let done = false;
         let mut item = TodoItem::new(name.clone(), done);
         item.complete();
         assert_eq!(item.done, true);
+    }
+
+    #[test]
+    fn test_change_name() {
+        let name = String::from("test");
+        let done = false;
+        let mut item = TodoItem::new(name.clone(), done);
+        item.change_name(String::from("changed"));
+        assert_eq!(item.name, "changed");
     }
 }
