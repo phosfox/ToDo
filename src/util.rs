@@ -8,7 +8,7 @@ pub fn write_todos(todos: Vec<TodoItem>, mut to: impl std::io::Write){
 
 pub fn print_todos(todos: Vec<TodoItem>) {
     for (i, todo) in todos.iter().enumerate() {
-        println!("{}: {}, {}", i+1, todo.name, todo.done);
+        println!("{}: {}", i+1, todo.to_string());
     }
 }
 
