@@ -1,8 +1,14 @@
 use crate::todo_item::TodoItem;
 
 pub fn write_todos(todos: Vec<TodoItem>, mut to: impl std::io::Write){
-    for todo in todos.iter() {
-        writeln!(to, "{},{}", todo.name, todo.done).unwrap();
+    for (i, todo) in todos.iter().enumerate() {
+        writeln!(to, "{},{},{}", i+1, todo.name, todo.done).unwrap();
+    }
+}
+
+pub fn print_todos(todos: Vec<TodoItem>) {
+    for (i, todo) in todos.iter().enumerate() {
+        println!("{}: {}, {}", i+1, todo.name, todo.done);
     }
 }
 
@@ -20,6 +26,6 @@ mod tests {
 
         let mut result = Vec::new();
         write_todos(todos, &mut result);
-        assert_eq!(result, b"test,false\ntest2,true\n");
+        assert_eq!(result, b"1,test,false\n2,test2,true\n");
     }
 }

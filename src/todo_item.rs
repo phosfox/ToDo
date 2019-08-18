@@ -16,6 +16,10 @@ impl TodoItem {
     pub fn complete(&mut self) {
         self.done = true;
     }
+
+    pub fn to_string(&self) -> String {
+        format!("{}, {}", self.name, self.done)
+    }
 }
 
 
@@ -52,5 +56,12 @@ mod tests {
         let mut item = TodoItem::new(name.clone(), done);
         item.change_name(String::from("changed"));
         assert_eq!(item.name, "changed");
+    }
+
+    #[test]
+    fn test_to_string() {
+        let item = TodoItem::new(String::from("test"), false);
+
+        assert_eq!("test, false", item.to_string());
     }
 }

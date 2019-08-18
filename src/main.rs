@@ -35,7 +35,7 @@ fn main(){
     println!("{:?}", matches.args.values());
 
     if matches.is_present("list"){
-         println!("{:?}", todos);
+         util::print_todos(todos);
     }
 }
 
