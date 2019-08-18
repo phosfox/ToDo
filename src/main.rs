@@ -2,11 +2,12 @@ extern crate clap;
 
 use clap::{Arg, App};
 mod todo_item;
+mod util;
 
 use todo_item::TodoItem;
 
 fn main(){
-    let matches = App::new("My Super Program")
+    let matches = App::new("Simple ToDo App")
                           .version("0.01")
                           .author("phosfox")
                           .about("Simple Todo App")
@@ -22,15 +23,19 @@ fn main(){
                                .help("lists all todo items"))
                           .get_matches();
 
-// You can check the value provided by positional arguments, or option arguments
+    let mut todos: Vec<TodoItem> = vec![];
+    todos.push(TodoItem::new(String::from("Placeholder"), false));
+
     if let Some(a) = matches.value_of("add") {
         let item = TodoItem::new(a.to_string(), false);
         println!("New Todo item added. \nName: {} Done: {}", item.name , item.done);
+        todos.push(item);
     }
 
-    if let Some(l) = matches.value_of("list") {
-         println!("Value for list: {}", l);
+    println!("{:?}", matches.args.values());
+
+    if matches.is_present("list"){
+         println!("{:?}", todos);
     }
-    // Continued program logic goes here...
 }
 

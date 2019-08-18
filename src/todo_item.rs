@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct TodoItem {
     pub name: String,
     pub done: bool, 
