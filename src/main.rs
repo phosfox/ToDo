@@ -5,6 +5,7 @@ mod todo_item;
 mod util;
 
 use todo_item::TodoItem;
+use std::path;
 
 fn main(){
     let matches = App::new("Simple ToDo App")
@@ -32,10 +33,20 @@ fn main(){
         todos.push(item);
     }
 
+     let path = path::Path::new(".todos");
+
+     if path.is_file() {
+          println!("exists");
+     } else {
+          let csv_string = util::todos_to_csv(&todos);
+          std::fs::write(path, csv_string).expect("Unable to write file");
+          println!("created");
+     }
+
     println!("{:?}", matches.args.values());
 
     if matches.is_present("list"){
-         util::print_todos(todos);
+         util::print_todos(&todos);
     }
 }
 
