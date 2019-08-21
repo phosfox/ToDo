@@ -24,7 +24,23 @@ fn main(){
                                .help("lists all todo items"))
                           .get_matches();
 
-    let mut todos: Vec<TodoItem> = vec![];
+     let path = path::Path::new(".todos");
+     let mut todos: Vec<TodoItem> = vec![];
+
+     if path.is_file() {
+          println!("exists");
+          //todos = util::parse_csv(path);
+     } else {
+          let file = match std::fs::File::create(&path) {
+               Err(why) => panic!("unable to create {}: {}", path.display(), why),
+               Ok(file) => file,
+          };
+
+          let csv_string = util::todos_to_csv(&todos);
+          std::fs::write(path, csv_string).expect("Unable to write file");
+          println!("created");
+     }
+
     todos.push(TodoItem::new(String::from("Placeholder"), false));
 
     if let Some(a) = matches.value_of("add") {
@@ -33,15 +49,6 @@ fn main(){
         todos.push(item);
     }
 
-     let path = path::Path::new(".todos");
-
-     if path.is_file() {
-          println!("exists");
-     } else {
-          let csv_string = util::todos_to_csv(&todos);
-          std::fs::write(path, csv_string).expect("Unable to write file");
-          println!("created");
-     }
 
     println!("{:?}", matches.args.values());
 
