@@ -1,20 +1,7 @@
 extern crate csv;
 
 use crate::todo_item::TodoItem;
-use std::io;
-use std::process;
-use std::str::FromStr;
-use std::num;
-
-enum ParseBoolError {
-    IoError(io::Error)
-}
-impl From<io::Error> for ParseBoolError {
-    fn from(error: io::Error) -> Self {
-        ParseBoolError::IoError(error)
-    }
-    
-}
+use std::io::Error;
 
 pub fn write_todos(todos: &Vec<TodoItem>, mut to: impl std::io::Write){
     for todo in todos.iter() {
@@ -36,35 +23,21 @@ pub fn print_todos(todos: &Vec<TodoItem>) {
     }
 }
 
-pub fn parse_csv(path: &std::path::Path) -> Result<Vec<TodoItem>, io::Error> {
-    let mut reader = match csv::ReaderBuilder::new()
-    .has_headers(false)
-    .from_path(path) {
-        Err(err) => return Err(From::from(err)),
-        Ok(reader) => reader,
-    };
+pub fn parse_csv(path: &std::path::Path) -> Result<Vec<TodoItem>, Error> {
+    let mut reader = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_path(path)?;
 
     let mut todos: Vec<TodoItem> = vec![];
 
     for result in reader.records() {
-        match result {
-            Err(err) => return Err(From::from(err)),
-            Ok(record) => {
-                let name: String = match record.get(0) {
-                    Some(name) => name.to_string(),
-                    None => panic!("name could not be parsed"),
-                };
-                
-                let done: bool = match record.get(1) {
-                    Some(done) => FromStr::from_str(done)?,
-                    None => panic!("done could not be parsed"),
-                };
+        let record = result?;
 
-                todos.push(TodoItem::new(name, done));
-            }
-        }
+        let name: String = record[0].to_string();
+        let done: bool = record[1].parse()?;
+
+        todos.push(TodoItem::new(name, done));        
     }
-
     return Ok(todos);
 }
 
