@@ -34,7 +34,7 @@ pub fn parse_csv(path: &std::path::Path) -> Result<Vec<TodoItem>, Error> {
         let record = result?;
 
         let name: String = record[0].to_string();
-        let done: bool = record[1].parse()?;
+        let done: bool =  record[1].parse().expect("could not parse input");
 
         todos.push(TodoItem::new(name, done));        
     }
