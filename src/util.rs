@@ -47,8 +47,6 @@ mod tests {
 
     #[test]
     fn test_parse_csv() {
-        //let prop_todos = vec![TodoItem::new(String::from("test1"), false), TodoItem::new(String::from("test2"), false), TodoItem::new(String::from("test3"), false)];
-
         let path = std::path::Path::new("./tests/props/parse_prob.csv");
         
         let todos = match parse_csv(&path){
