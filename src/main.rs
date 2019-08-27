@@ -21,7 +21,12 @@ fn main() -> std::io::Result<()> {
           .arg(Arg::with_name("list")
                .short("l")
                .long("list")
-               .help("lists all todo items"))
+               .help("Lists all todo items"))
+          .arg(Arg::with_name("done")
+               .short("d")
+               .long("done")
+               .help("Takes a positive number and marks that todo item as done")
+               .takes_value(true))
           .get_matches();
 
      let path = path::Path::new(".todos");
@@ -49,6 +54,26 @@ fn main() -> std::io::Result<()> {
 
      if matches.is_present("list") {
           util::print_todos(&todos);
+     }
+
+
+     if let Some(d) = matches.value_of("done") {
+          let mut idx: usize = match d.parse() {
+               Ok(idx) => idx,
+               Err(err) => {
+                    println!("could not parse integer: {}", err);
+                    std::process::exit(1);
+               }
+          };
+
+          idx -= 1;
+
+          if idx > todos.len() {
+               println!("index is out of bounds, should be between 1-{}", todos.len());
+               std::process::exit(1);
+          }
+
+          todos[idx].complete() ;
      }
 
      let csv_string = util::todos_to_csv(&todos);

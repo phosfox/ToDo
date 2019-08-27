@@ -42,9 +42,7 @@ mod tests {
 
     #[test]
     fn test_complete() {
-        let name = String::from("test");
-        let done = false;
-        let mut item = TodoItem::new(name.clone(), done);
+        let mut item = TodoItem::new(String::from("test"), false);
         item.complete();
         assert_eq!(item.done, true);
     }
@@ -61,7 +59,6 @@ mod tests {
     #[test]
     fn test_to_string() {
         let item = TodoItem::new(String::from("test"), false);
-
         assert_eq!("test, false", item.to_string());
     }
 }
